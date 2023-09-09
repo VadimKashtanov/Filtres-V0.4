@@ -1,10 +1,10 @@
 #include "etc.h"
 
-uint const factorials[13] = { 1, 1, 2, 6, 24, 120, 720, 5040, 40320, 
+const uint factoriel[13] = { 1, 1, 2, 6, 24, 120, 720, 5040, 40320, 
                                     362880, 3628800, 39916800, 479001600 };
 
 float rnd() {
-	return (float)(rand()%1000)/999.0;	//rand()%100 pour avoire 1.0
+	return (float)(rand()%100000)/99999.0;	//rand()%100 pour avoire 1.0
 };
 
 inline float ___exp(register float x)  // cubic spline approximation

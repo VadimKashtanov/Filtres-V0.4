@@ -6,7 +6,7 @@ float rnd();
 
 //  =========== Factorielles ==============
 
-const uint factoriel[13]; //il a 12 facto en i32 et 20 facto en i64, meme i128 en a que 34. Il est donc plus rentable de les ecrires toutes en liste.
+extern const uint factoriel[13]; //il a 12 facto en i32 et 20 facto en i64, meme i128 en a que 34. Il est donc plus rentable de les ecrires toutes en liste.
 //FACT(n) est dans macros.h
 
 //  =========== Calcule Optimisee =========

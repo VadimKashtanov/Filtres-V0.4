@@ -29,16 +29,18 @@
 //f(1,1,1) == 8
 //f(0,0,0) == 4.5
 
-#define C_max 15
-#define Y_max 200
+#define C_max 10
+#define Y_max 50
 
 #define N0_max 8
 #define N1_max 8
 #define N2_max 5
 #define N3_max 3
 
+#define N_MAX MAX4(N0_max, N1_max, N2_max, N3_max)
+
 #define POIDS_NEU(n) n         //
-#define POIDS_COND(n) FACT(n)  //  Si il y a n valeurs, il y a donc n*(n-1)*(n-2)*(n-3)...*1 combinaisons posibles
+#define POIDS_COND(n) (1<<n)//FACT(n)  //  Si il y a n valeurs, il y a donc n*(n-1)*(n-2)*(n-3)...*1 combinaisons posibles
 #define CONSTES_FLTR(n) n       //
 
 #define P0_max 0
@@ -94,8 +96,8 @@ void plume_mdl(Mdl_t * mdl);
 void comportement(Mdl_t * mdl);
 
 //	Qlqs fonctions directes
-float poid_rnd();   //{-2,-1,-.5,0,+.5,+1,+2}
-
+float poid_neu_rnd();   //{-2,-1,-.5,0,+.5,+1,+2}
+float poid_cond_rnd();
 
 //	Calcule f(x)
 float f(Mdl_t * mdl, uint depart);

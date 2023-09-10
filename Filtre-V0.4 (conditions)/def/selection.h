@@ -29,3 +29,13 @@ Parametres:
     T cmb d'iteations
 */
 Mdl_t * evolution(Mdl_t * depart, uint n, uint K, uint T, Env_t env);
+
+
+
+/*  Multiples Evolutions sur multiples tribues
+   
+*/
+Mdl_t * tribues(
+    Mdl_t * depart, Env_t env,
+    uint tribues, uint T_tribues,
+    uint n, uint K, uint T_evolution);

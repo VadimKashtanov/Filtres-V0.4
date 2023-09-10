@@ -56,12 +56,12 @@ LE_GOTO:
 				    }
 				    //
 				    if (_minG == _maxG) {
-                        MSG("maxG=%f == minG=%f\n", _minG, _maxG);
+                        //MSG("maxG=%f == minG=%f\n", _minG, _maxG);
                         G->conste[G->conste_depart[c] + j*G->n[c] + 0] += 0.001;
                         goto LE_GOTO;
                     }
 				    if (_maxP == _minP) {
-                        MSG("maxP%f == minP=%f\n", _minP, _maxP);
+                        //MSG("maxP%f == minP=%f\n", _minP, _maxP);
                         P->conste[P->conste_depart[c] + j*P->n[c] + 0] += 0.001;
                         goto LE_GOTO;
                     }

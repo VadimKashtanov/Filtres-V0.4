@@ -13,9 +13,12 @@ typedef struct  {
     
     //  % Modes de selection
     float MODE0/*=0.6*/, MODE1/*=0.3*/, MODE2/*=0.1*/;
+
+    //  Longeure / Distance de predition
+    uint l; //=2;
 } Env_t;
 
-void gain(Mdl_t * mdl, float * _gain, float * _prediction);
+void gain(Mdl_t * mdl, float * _gain, float * _prediction, uint l);
 
 void mixer(Mdl_t * G, Mdl_t * P, Env_t env, uint mode);
 

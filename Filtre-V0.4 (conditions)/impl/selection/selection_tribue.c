@@ -11,12 +11,16 @@ Mdl_t * evolution(Mdl_t * depart, uint n, uint K, uint T, Env_t env) {
     assert(env.MUTP_p <= 1.00);
     assert(env.MUTP_ema_int <= 1.00);
     assert(env.MUTP_depuis <= 1.00);
+    //
+    assert(env.l >= 1);
 
     //
     uint N = (1+K)*n;
 	Mdl_t * mdl[N];
-	for (uint i=0; i < N; i++) mdl[i] = copier_mdl(depart);
-			
+	for (uint i=0; i < N; i++) {
+        mdl[i] = copier_mdl(depart);
+        mixer(depart, mdl[i], env, 0);    
+    }			
 	//	Les points de score
 	float gains[N]; 		uint rang_gains[N];	//gain exacte depuis le depart avec un pret
 	float prediction[N]; 	uint rang_prediction[N];//% reussite de prediction de tendance
@@ -37,7 +41,7 @@ Mdl_t * evolution(Mdl_t * depart, uint n, uint K, uint T, Env_t env) {
 		DEPART_CHRONO()
 		//	Scores
 		for (uint i=0; i < N; i++) {
-			gain(mdl[i], gains+i, prediction+i);
+			gain(mdl[i], gains+i, prediction+i, env.l);
 			rang_gains[i] = i;
 			rang_prediction[i] = i;
 			points[i] = 0;
@@ -73,7 +77,7 @@ Mdl_t * evolution(Mdl_t * depart, uint n, uint K, uint T, Env_t env) {
 
 		//	Sommes des Points
 		for (uint i=0; i < N; i++) {
-			points[rang_gains[i]] += 0*(N-i);
+			points[rang_gains[i]] += (N-i);
 			points[rang_prediction[i]] += (N-i);
 			//printf("%i:%.3g,  ", rang_prediction[i], prediction[rang_prediction[i]]);
 		}
@@ -93,7 +97,7 @@ Mdl_t * evolution(Mdl_t * depart, uint n, uint K, uint T, Env_t env) {
 		//printf("\n");
 
 		//	Plumage d'avancement
-#define TOUT_LES 10
+#define TOUT_LES 99
 		if (t % TOUT_LES == 0 || t==(T-1)) {
 			float tmis = VALEUR_CHRONO()/(1+t);	//temp par iteration
 			uint reste_sec = (uint)roundf(tmis*(T-t-1));	//cmb il rest d'iterations

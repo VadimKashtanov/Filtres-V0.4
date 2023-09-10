@@ -7,9 +7,10 @@ void mixer(Mdl_t * G, Mdl_t * P, Env_t env, uint mode) {
             1 : que cst
             2 : que p
     */
-
-	float PG = (1.00-env.GG);
-	float PP = (1.00-env.GP);
+    float GG = env.GG;
+    float GP = env.GP;
+	float PG = (1.00-GG);
+	float PP = (1.00-GP);
 	float MUTP_cst     = env.MUTP_cst;
 	float MUTP_p       = env.MUTP_p;
 	float MUTP_ema_int = env.MUTP_ema_int;
@@ -35,6 +36,7 @@ void mixer(Mdl_t * G, Mdl_t * P, Env_t env, uint mode) {
 	    float _maxG, _maxP, _minG, _minP;
 	    float _P, _G;
 	    uint p;
+LE_GOTO:
 	    for (uint c=0; c < G->C; c++) {
 		    if (G->type[c] != 2) {
 			    for (uint j=0; j < G->y[c]; j++) {
@@ -53,8 +55,16 @@ void mixer(Mdl_t * G, Mdl_t * P, Env_t env, uint mode) {
 					    if (_P <= _minP) _minP = _P;
 				    }
 				    //
-				    if (_minG == _maxG) ERR("%f == %f\n", _minG, _maxG);
-				    if (_maxP == _minP) ERR("%f == %f\n", _minP, _maxP);
+				    if (_minG == _maxG) {
+                        MSG("maxG=%f == minG=%f\n", _minG, _maxG);
+                        G->conste[G->conste_depart[c] + j*G->n[c] + 0] += 0.001;
+                        goto LE_GOTO;
+                    }
+				    if (_maxP == _minP) {
+                        MSG("maxP%f == minP=%f\n", _minP, _maxP);
+                        P->conste[P->conste_depart[c] + j*P->n[c] + 0] += 0.001;
+                        goto LE_GOTO;
+                    }
 				    //
 				    for (uint k=0; k < G->n[c]; k++) {
 					    p = G->conste_depart[c] + j*G->n[c] + k;
@@ -73,8 +83,19 @@ void mixer(Mdl_t * G, Mdl_t * P, Env_t env, uint mode) {
 		    if (rnd() < PG) G->poid[i] = P->poid[i];
 		    if (rnd() < GP) P->poid[i] = tmp;
 
-		    if (rnd() < MUTP_p) P->poid[i] = poid_rnd();
+		    //if (rnd() < MUTP_p) P->poid[i] = poid_rnd();
 	    };
+        FOR(0, c, G->C) {
+            if (G->type[c] == 2) {
+                FOR(0, k, POIDS_NEU(G->n[c])*G->y[c]) {
+                    if (rnd() < MUTP_p) P->poid[G->poid_depart[c]+k] = poid_neu_rnd();
+                }
+            } else if (G->type[c] == 3) {
+                FOR(0, k, POIDS_COND(G->n[c])*G->y[c]) {
+                    if (rnd() < MUTP_p) P->poid[G->poid_depart[c]+k] = poid_cond_rnd();
+                }
+            }        
+        }
     }
 	
 	//	Mixage des Ema & Intervalles
@@ -96,7 +117,7 @@ void mixer(Mdl_t * G, Mdl_t * P, Env_t env, uint mode) {
 	    }
 
 	    //	Mixage des `neu_depuis` & `flt_depuis`
-	    for (uint i=0; i < G->C; i++) {
+	    for (uint i=1; i < G->C; i++) {
 		    if (G->neu_depuis[i] != 0) {
 			    for (uint j=0; j < G->y[i]; j++) {
 				    for (uint k=0; k < G->n[i]; k++) {

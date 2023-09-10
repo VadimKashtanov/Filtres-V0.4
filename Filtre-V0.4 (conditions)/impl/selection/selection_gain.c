@@ -1,12 +1,12 @@
 #include "selection.h"
 
-void gain(Mdl_t * mdl, float * _gain, float * _prediction) {
+void gain(Mdl_t * mdl, float * _gain, float * _prediction, uint l) {
 	_gain[0] = USDT;
 	_prediction[0] = 0.0;
 
 	float _f, p0, p1;
-	for (uint i=DEPART; i < PRIXS-1-3; i++) {
-		p1 = prixs[i+2];
+	for (uint i=DEPART; i < PRIXS-1-l-1; i++) {
+		p1 = prixs[i+l];
 		p0 = prixs[i];
 		//
 		_f = signe( f(mdl, i) );

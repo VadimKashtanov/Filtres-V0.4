@@ -23,7 +23,7 @@ void gain(Mdl_t * mdl, float * _gain, float * _prediction, uint l) {
 	if (_gain[0] < 0) _gain[0] = 0;
 
 	_gain[0] -= USDT;
-	_prediction[0] /= (float)(PRIXS-1-DEPART-3);
+	_prediction[0] /= (float)(PRIXS-1-DEPART-l-1);
 	_prediction[0] *= (1+div_par);
 
 	//uint h = hash_mdl(mdl);

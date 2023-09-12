@@ -20,7 +20,9 @@ typedef struct  {
 
 void gain(Mdl_t * mdl, float * _gain, float * _prediction, uint l);
 
+//  Magniation des Models
 void mixer(Mdl_t * G, Mdl_t * P, Env_t env, uint mode);
+Mdl_t * etendre_a(Mdl_t * depuis, uint C, uint *y, uint *n, uint *type);
 
 /*  Selection isolee.
 Parametres:

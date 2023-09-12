@@ -85,7 +85,7 @@ void plume_mdl(Mdl_t * mdl) {
 
 	plume_poids(mdl);
 	plume_constes(mdl);
-	plume_var(mdl);
+	//plume_var(mdl);
 };
 
 //===============================================

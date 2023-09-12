@@ -97,8 +97,8 @@ Mdl_t * evolution(Mdl_t * depart, uint n, uint K, uint T, Env_t env) {
 		//printf("\n");
 
 		//	Plumage d'avancement
-#define TOUT_LES 1000
-		if (t % TOUT_LES == 0 || t==(T-1)) {
+#define TOUT_LES 10
+		/*if (t % TOUT_LES == 0 || t==(T-1)) {
 			float tmis = VALEUR_CHRONO()/(1+t);	//temp par iteration
 			uint reste_sec = (uint)roundf(tmis*(T-t-1));	//cmb il rest d'iterations
 			uint secondes = reste_sec % 60;
@@ -110,20 +110,24 @@ Mdl_t * evolution(Mdl_t * depart, uint n, uint K, uint T, Env_t env) {
 				gains[cintasat[0]], prediction[cintasat[0]],
 				mins, secondes
 			);
-		}
+		}*/
 
 		//	Si pas derniere iteration
 		if (t != T-1) {
             uint mode = 0;
-            float r = rnd();
-            if (r <= env.MODE0) mode = 0;
-            else if (r <= (env.MODE0+env.MODE1)) mode = 1;
-            else if (r <= (env.MODE0+env.MODE1+env.MODE2)) mode = 2;
+            //float r = rnd();
+            //if (r <= env.MODE0) mode = 0;
+            //else if (r <= (env.MODE0+env.MODE1)) mode = 1;
+            //else if (r <= (env.MODE0+env.MODE1+env.MODE2)) mode = 2;
             
 			//	Mixage
+			printf("====================================\n\033[93m");
+			plume_mdl(mdl[cintasat[0]]);
+			printf("\033[0m");
 			for (uint i=0; i < n; i++) {	//	n = N / (K+1)
 				for (uint k=0; k < K; k++) {
 					mixer(mdl[cintasat[i]], mdl[cintasat[n + i*K + k]], env, mode);
+					plume_mdl(mdl[cintasat[n + i*K + k]]);
 				}
 			}
 		}
